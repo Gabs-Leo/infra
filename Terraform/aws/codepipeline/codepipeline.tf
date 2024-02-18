@@ -1,0 +1,74 @@
+/*
+resource "aws_codepipeline" "codepipeline" {
+  name     = "${var.project}-${var.environment}-codepipeline"
+  role_arn = aws_iam_role.codepipeline_role.arn
+
+  artifact_store {
+    location = aws_s3_bucket.codepipeline_artifact_store.bucket
+    type     = "S3"
+  }
+
+  stage {
+    name = "Source"
+
+    action {
+      name             = "Source"
+      category         = "Source"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
+      version          = "1"
+      output_artifacts = ["source_output"]
+
+      configuration = {
+        ConnectionArn = aws_codestarconnections_connection.codestar.arn
+        FullRepositoryId = "${var.full_repo_name}"
+        BranchName = "${var.branch_name}"
+      }
+
+    }
+  }
+
+  stage {
+    name = "Build"
+
+    action {
+      name = "Build"
+      category = "Build"
+      owner = "AWS"
+      provider = "CodeBuild"
+      version = "1"
+
+      input_artifacts = ["source_output"]
+
+      configuration = {
+        ProjectName = "${var.environment}-main-codebuild"
+      }
+
+      output_artifacts = ["build_output"]
+    }
+  }
+
+  stage {
+    name = "Deploy"
+
+    action {
+      name = "Deploy"
+      category = "Deploy"
+      owner = "AWS"
+      provider = "ECS"
+      version = "1"
+
+      input_artifacts = ["build_output"]
+
+      configuration = {
+        ClusterName = "${var.environment}-${var.cluster_name}-main"
+        ServiceName = "${var.environment}-main-service"
+      }
+    }
+  }
+}
+*/
+resource "aws_codestarconnections_connection" "codestar" {
+  name          = "${var.project}-${var.environment}-connection"
+  provider_type = "GitHub"
+}

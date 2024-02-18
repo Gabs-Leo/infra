@@ -36,3 +36,17 @@ module "ec2" {
     user_data = local.user_data.code_deploy
     tags = local.tags
 }
+
+module "codedeploy" {
+    source = "./code_deploy"
+    project = var.project
+    environment = terraform.workspace
+}
+
+module "codepipeline" {
+    source = "./codepipeline"
+    project = var.project
+    environment = terraform.workspace
+    branch_name = var.branch_name
+    full_repo_name = var.full_repo_name
+}
