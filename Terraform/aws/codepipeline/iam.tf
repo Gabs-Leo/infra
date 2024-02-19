@@ -20,11 +20,22 @@ EOF
 resource "aws_iam_role_policy" "codepipeline_policy" {
   name = "codepipeline_policy"
   role = aws_iam_role.codepipeline_role.id
-
+  #TODO fix codedeploy policy
   policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
+    {
+      "Effect":"Allow",
+      "Action": [
+        "codedeploy:*"
+      ],
+      "Resource": [
+        "${var.resources_arn[0]}",
+        "${var.resources_arn[1]}",
+        "arn:aws:codedeploy:us-east-2:XXXXXXXXXXXX:deploymentconfig:CodeDeployDefault.OneAtATime"
+      ]
+    },
     {
       "Effect":"Allow",
       "Action": [

@@ -49,4 +49,7 @@ module "codepipeline" {
     environment = terraform.workspace
     branch_name = var.branch_name
     full_repo_name = var.full_repo_name
+    app_name = module.codedeploy.app_name
+    deployment_group = module.codedeploy.deployment_group
+    resources_arn = module.codedeploy.resources_arn
 }

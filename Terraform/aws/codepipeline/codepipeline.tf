@@ -1,4 +1,4 @@
-/*
+
 resource "aws_codepipeline" "codepipeline" {
   name     = "${var.project}-${var.environment}-codepipeline"
   role_arn = aws_iam_role.codepipeline_role.arn
@@ -27,7 +27,7 @@ resource "aws_codepipeline" "codepipeline" {
 
     }
   }
-
+/*
   stage {
     name = "Build"
 
@@ -47,7 +47,7 @@ resource "aws_codepipeline" "codepipeline" {
       output_artifacts = ["build_output"]
     }
   }
-
+*/
   stage {
     name = "Deploy"
 
@@ -55,20 +55,20 @@ resource "aws_codepipeline" "codepipeline" {
       name = "Deploy"
       category = "Deploy"
       owner = "AWS"
-      provider = "ECS"
+      provider = "CodeDeploy"
       version = "1"
 
-      input_artifacts = ["build_output"]
+      input_artifacts = ["source_output"]
 
       configuration = {
-        ClusterName = "${var.environment}-${var.cluster_name}-main"
-        ServiceName = "${var.environment}-main-service"
+        ApplicationName = var.app_name
+        DeploymentGroupName = var.deployment_group
       }
     }
   }
 }
-*/
+
 resource "aws_codestarconnections_connection" "codestar" {
-  name          = "${var.project}-${var.environment}-connection"
+  name          = "${var.project}-${var.environment}-conn"
   provider_type = "GitHub"
 }
