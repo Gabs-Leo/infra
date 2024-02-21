@@ -55,6 +55,7 @@ resource "aws_codepipeline" "codepipeline" {
 
       configuration = {
         ProjectName = "${var.project}-${var.environment}-codebuild"
+        PrimarySource = "infra_output"
       }
 
       output_artifacts = ["build_output"]

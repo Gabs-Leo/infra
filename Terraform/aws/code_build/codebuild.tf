@@ -36,9 +36,10 @@ resource "aws_codebuild_project" "codebuild" {
   }
 
   source {
+    
     type     = "CODEPIPELINE"
-    #buildspec = data.local_file.buildspec_local.content
-    buildspec = "Terraform/aws/code_build/config/buildspec.yml"
+    buildspec = data.local_file.buildspec_local.content
+    #buildspec = "./Terraform/aws/code_build/config/buildspec.yml"
     #location = "${var.github_location_main}"
   }
 }
