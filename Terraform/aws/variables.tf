@@ -22,3 +22,13 @@ variable "full_repo_name" {
   type = string
   default = "Gabs-Leo/API-NodeExample"
 }
+
+variable "infra_branch_name" {
+  default = "feature/terraform-aws-codepipeline"
+  type = string
+}
+
+variable "infra_full_repo_name" {
+  type = string
+  default = "Gabs-Leo/infra"
+}

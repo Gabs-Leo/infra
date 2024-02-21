@@ -14,6 +14,14 @@ variable "full_repo_name" {
   type = string
 }
 
+variable "infra_branch_name" {
+  type = string
+}
+
+variable "infra_full_repo_name" {
+  type = string
+}
+
 variable "app_name" {
   type = string
 }

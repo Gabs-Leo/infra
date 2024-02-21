@@ -1,0 +1,26 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /opt/app/nodeapp
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+hooks:
+  BeforeInstall:
+    - location: scripts/deploy/before_install.sh
+      runas: ec2-user
+  AfterInstall:
+    - location: scripts/deploy/after_install.sh
+      runas: ec2-user
+  ApplicationStop:
+    - location: scripts/deploy/stop_server.sh
+      runas: ec2-user
+  ApplicationStart:
+    - location: scripts/deploy/start_server.sh
+      runas: ec2-user
+  ValidateService:
+    - location: scripts/deploy/validate_server.sh
+      runas: ec2-user

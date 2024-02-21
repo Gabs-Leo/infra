@@ -1,0 +1,31 @@
+version: 0.2
+#env:
+#  secrets-manager:
+#    REACT_APP_MY_VAR: /ECS-CLUSTER/cluster-testecs:REACT_APP_MY_VAR
+phases:
+  install:
+    commands:
+      - "ls -a"
+  build:
+    commands:
+      - export STAGE=$STAGE
+      - cp -r $CODEBUILD_SRC_DIR_App ./app
+      - cp ./cloudformation/services/docker/Dockerfile .
+      - rm -rf .env || true
+      - docker pull $REPOSITORY_URI:latest || true
+
+      - echo "buildspec"
+      - touch ./app/.env
+      - echo "REACT_APP_MY_VAR=$REACT_APP_MY_VAR" > ./app/.env
+      
+      - docker build --cache-from $REPOSITORY_URI:latest -t $REPOSITORY_URI:$IMAGE_TAG --build-arg AWS_SECRET_ID=$AWS_SECRET_ID --build-arg AWS_REGION=$AWS_REGION -f ./cloudformation/services/docker/Dockerfile .
+      - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - docker push $REPOSITORY_URI:latest
+  post_build:
+    commands:
+      - printf '{"tag":"%s:%s"}' "$REPOSITORY_URI" "$IMAGE_TAG" > /tmp/build.json
+artifacts:
+  files:
+    - /tmp/build.json
+  discard-paths: yes

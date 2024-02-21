@@ -24,10 +24,23 @@ resource "aws_codepipeline" "codepipeline" {
         FullRepositoryId = "${var.full_repo_name}"
         BranchName = "${var.branch_name}"
       }
+    }
+    action {
+      name             = "Infra"
+      category         = "Source"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
+      version          = "1"
+      output_artifacts = ["infra_output"]
 
+      configuration = {
+        ConnectionArn = aws_codestarconnections_connection.codestar.arn
+        FullRepositoryId = "${var.infra_full_repo_name}"
+        BranchName = "${var.infra_branch_name}"
+      }
     }
   }
-/*
+
   stage {
     name = "Build"
 
@@ -37,17 +50,17 @@ resource "aws_codepipeline" "codepipeline" {
       owner = "AWS"
       provider = "CodeBuild"
       version = "1"
-
-      input_artifacts = ["source_output"]
+      
+      input_artifacts = ["source_output", "infra_output"]
 
       configuration = {
-        ProjectName = "${var.environment}-main-codebuild"
+        ProjectName = "${var.project}-${var.environment}-codebuild"
       }
 
       output_artifacts = ["build_output"]
     }
   }
-*/
+
   stage {
     name = "Deploy"
 
@@ -58,7 +71,8 @@ resource "aws_codepipeline" "codepipeline" {
       provider = "CodeDeploy"
       version = "1"
 
-      input_artifacts = ["source_output"]
+      input_artifacts = ["build_output"]
+
 
       configuration = {
         ApplicationName = var.app_name

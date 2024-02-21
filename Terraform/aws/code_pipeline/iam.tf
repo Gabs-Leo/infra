@@ -30,11 +30,7 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
       "Action": [
         "codedeploy:*"
       ],
-      "Resource": [
-        "${var.resources_arn[0]}",
-        "${var.resources_arn[1]}",
-        "arn:aws:codedeploy:us-east-2:XXXXXXXXXXXX:deploymentconfig:CodeDeployDefault.OneAtATime"
-      ]
+      "Resource": ${jsonencode(var.resources_arn)}
     },
     {
       "Effect":"Allow",

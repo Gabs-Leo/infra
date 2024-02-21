@@ -29,7 +29,6 @@ variable "tags" {
   type = object({
     Project = string
     CreatedBy = string
-    CreatedOn = string
     Environment = string
   })
 }
