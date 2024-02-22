@@ -2,16 +2,16 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /
+    destination: /home/ec2-user/node-app
 #permissions:
 #  - object: /
 #    pattern: "**"
 #    owner: ec2-user
 #    group: ec2-user
 hooks:
-  BeforeInstall:
-    - location: ./Terraform/aws/code_deploy/scripts/my_before_install.sh
-      runas: ec2-user
+#  BeforeInstall:
+#    - location: ./Terraform/aws/code_deploy/scripts/my_before_install.sh
+#      runas: ec2-user
   ApplicationStart:
     - location: ./Terraform/aws/code_deploy/scripts/my_start_server.sh
       runas: ec2-user
