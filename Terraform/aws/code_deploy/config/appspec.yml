@@ -10,8 +10,8 @@ files:
 #    group: ec2-user
 hooks:
   BeforeInstall:
-    - location: scripts/my_before_install.sh
+    - location: ./Terraform/aws/code_deploy/scripts/my_before_install.sh
       runas: ec2-user
   ApplicationStart:
-    - location: scripts/my_start_server.sh
+    - location: ./Terraform/aws/code_deploy/scripts/my_start_server.sh
       runas: ec2-user

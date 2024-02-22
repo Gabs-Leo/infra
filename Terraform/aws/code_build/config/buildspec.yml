@@ -10,14 +10,15 @@ phases:
     commands:
       - export STAGE=$STAGE
       - mkdir app
-      - cat $CODEBUILD_SRC_DIR_source_output
+#      - cat $CODEBUILD_SRC_DIR_source_output
       - cp -r $CODEBUILD_SRC_DIR_source_output ./app
       - rm -rf .env || true
 
       - echo "buildspec"
-      - cd ./app
-      - npm install 
-      - npm run build
+#      - cd ./app/01
+#      - ls
+#      - yarn install
+#      - yarn build
       - cp ./Terraform/aws/code_deploy/config/appspec.yml ./appspec.yml
 #      - touch ./app/.env
 #      - echo "REACT_APP_MY_VAR=$REACT_APP_MY_VAR" > ./app/.env
