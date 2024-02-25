@@ -32,3 +32,11 @@ variable "infra_full_repo_name" {
   type = string
   default = "Gabs-Leo/infra"
 }
+
+variable "record_name" {
+  type = string
+}
+
+variable "hosted_zone_id" {
+  type = string
+}

@@ -27,6 +27,12 @@ locals {
   }
 }
 
+module "s3_codepipeline" {
+  source = "./code_pipeline/s3_cloudfront"
+  record_name = var.record_name
+}
+
+/*
 module "ec2" {
   source = "./ec2"
   key_name = var.key_name
@@ -53,7 +59,7 @@ module "codebuild" {
 }
 
 module "codepipeline" {
-  source = "./code_pipeline"
+  source = "./code_pipeline/pipeline_code_deploy"
   project = var.project
   environment = terraform.workspace
   
@@ -65,4 +71,4 @@ module "codepipeline" {
   app_name = module.codedeploy.app_name
   deployment_group = module.codedeploy.deployment_group
   resources_arn = module.codedeploy.resources_arn
-}
+}*/
