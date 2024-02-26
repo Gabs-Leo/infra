@@ -27,9 +27,20 @@ locals {
   }
 }
 
-module "s3_codepipeline" {
-  source = "./code_pipeline/s3_cloudfront"
+module "s3_website" {
+  source = "./modules/s3_website"
   record_name = var.record_name
+  s3_canonical_user_id = module.cloud_front.s3_canonical_user_id
+}
+
+module "cloud_front" {
+  source = "./modules/cloud_front"
+  bucket_regional_domain_name = module.s3_website.bucket_regional_domain_name
+  bucket_name = module.s3_website.bucket_name
+  environment = terraform.workspace
+  record_name = var.record_name
+  acm_certificate_arn = var.acm_certificate_arn
+  project = var.project
 }
 
 /*

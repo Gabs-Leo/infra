@@ -1,0 +1,35 @@
+version: 0.2
+env:
+  parameter-store:
+    CF_DISTRIBUTION: "/CLOUDFRONT/${ProjectName}/CloudfrontDistributionId"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing dependencies"
+      - npm install yarn -g
+
+  pre_build:
+    commands:
+      - echo "Preparing for build"
+      - cp -r $CODEBUILD_SRC_DIR_App/. .
+      - yarn install
+    finally:
+      - echo "Pre-build finished on `date`"
+
+  build:
+    commands:
+      - echo "Building the application"
+      - yarn build
+    finally:
+      - echo "Build Finished on `date`"
+
+  post_build:
+    commands:
+      - echo "Deploying artifacts"
+      - aws s3 sync --delete ./dist/ s3://${CNAME} --cache-control max-age=0
+      - aws cloudfront create-invalidation --distribution-id ${CF_DISTRIBUTION} --paths /*
+    finally:
+      - echo "Post-build finished on `date`"
