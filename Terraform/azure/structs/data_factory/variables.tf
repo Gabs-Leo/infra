@@ -10,10 +10,10 @@ variable "environment" {
   type = string
 }
 
-variable "storage_account_name" {
+variable "replication_type" {
   type = string
 }
 
-variable "replication_type" {
+variable "project" {
   type = string
 }
